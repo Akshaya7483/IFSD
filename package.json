@@ -1,0 +1,20 @@
+{
+  "name": "arya",
+  "version": "1.0.0",
+  "description": "```\r .\r │\r ├── controllers\r │       └── recipeController.js\r │       └── userController.js\r ├── models\r │       └── recipeModel.js\r │       └── userModel.js\r ├── public\r │       └── styles.css\r ├── views\r │   ├── index.ejs\r │   ├── createRecipe.ejs\r │   ├── dashboard.ejs\r │   ├── editRecipe.ejs\r │   └── login.ejs\r │   └── recipeDetails.ejs\r │   └── register.ejs\r ├── database.sqlite\r ├── index.js\r └── package.json\r ```",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "nodemon": "^3.1.0",
+    "sqlite3": "^5.1.7"
+  }
+}

@@ -1,0 +1,2 @@
+$ npm init -y
+$ npm i --save-dev nodemon express ejs sqlite3 express-session bcryptjs --save
