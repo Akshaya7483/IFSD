@@ -6,32 +6,40 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/chatroom/create" id="lf" method="post">
-        <input type="text" id="create">
-        <button type="submit" onclick="chatroom()">create chatroom</button>
-        <input type="text" id="join">
-        <button type="submit" onclick="joinchat()">join chat</button>
-        <h6 id="userI" style="opacity:0"><%= userId %></h6>
-        <button type="submit" onclick="commonFunction('diary')">Diary</button>
-        <button type="submit" onclick="commonFunction('music')">Music</button>
+    <form id="lf" method="post">
+        <input type="text" id="create" placeholder="Create Chatroom">
+        <button type="button" onclick="chatroom()">Create Chatroom</button>
+    
+        <input type="text" id="join" placeholder="Join Chatroom">
+        <button type="button" onclick="joinchat()">Join Chat</button>
+    
+        <h6 id="userI" style="opacity:100"><%= userId %></h6>
+    
+        <button type="button" onclick="commonFunction('diary')">Diary</button>
+        <button type="button" onclick="commonFunction('music')">Music</button>
     </form>
+    
     <script>
-        function chatroom()
-        {   user02=document.getElementById("create").value
-            userI=document.getElementById("userI").value
-            document.getElementById("lf").action=`/chatroom/create/${userI}/${user02}`;
+        function chatroom() {
+            let username = document.getElementById("create").value;
+            let userI = document.getElementById("userI").textContent; 
+            document.getElementById("lf").action = `/chatroom/create/${userI}/${username}`;
+            document.getElementById("lf").submit();
         }
-        
+    
         function joinchat() {
             const join = document.getElementById("join").value;
             document.getElementById("lf").action = `/chatroom/${join}`;
+            document.getElementById("lf").submit(); // Submit form
         }
-
+    
         function commonFunction(type) {
             document.getElementById("lf").action = `/create_tb/${type}`;
             document.getElementById("lf").method = 'get';
+            document.getElementById("lf").submit(); // Submit form
         }
     </script>
+    
 </body>
 </body>
 </html>

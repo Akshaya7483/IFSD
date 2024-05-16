@@ -22,21 +22,16 @@ module.exports = {
         res.render('dashboard',{userId})
     },
     create: (req, res) => {
-        // const user1Id = req.session.userId;
-        console.log(user1Id)
-    
-        const username = req.params.user02;
+        let userI=req.params.userI;
+        let username = req.params.username;
         user.getUserByUsername(username,(err, user) => {
             if (err) {
                 console.error("Error retrieving user by username:", err);
                 res.status(500).send("An error occurred while retrieving user information");
                 return;
             }
-            
-            console.log(user);
-            // If you need to use user1Id and user2Id further, 
-            // it's best to do it within this callback function
-            // res.render('chatroom', { user1Id, user2Id });
+        // console.log(user.id)
+        db.create_usertable(userI,user.id);
         });
     }  
 

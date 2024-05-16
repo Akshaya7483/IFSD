@@ -15,5 +15,23 @@ module.exports = {
             }
         });
         con.close();
+    },
+    create_usertable:(id1,id2)=>{
+        const con= new sqlite3.Database(`./storage/${id1}.sqlite`)
+        const create4userI = `CREATE TABLE chat${id2} (id INTEGER PRIMARY KEY AUTOINCREMENT,data TEXT)`;
+        con.run(create4userI, (err) => {
+            if (err) {
+                return err;
+            }
+        });
+        const con2= new sqlite3.Database(`./storage/${id2}.sqlite`)
+        const create4username = `CREATE TABLE chat${id1} (id INTEGER PRIMARY KEY AUTOINCREMENT,data TEXT)`;
+        con2.run(create4username, (err) => {
+            if (err) {
+                return err;
+            }
+        });
+        con.close();
+        con2.close();
     }
 }
