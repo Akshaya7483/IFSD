@@ -33,5 +33,22 @@ module.exports = {
         });
         con.close();
         con2.close();
-    }
+    },
+    chat: (userId, callback) => {
+        const con = new sqlite3.Database(`./storage/${userId}.sqlite`);
+        const ṣql = `SELECT name FROM sqlite_master WHERE type="table" AND name LIKE 'chat%'`;
+    
+        con.all(ṣql, [], (err, rows) => {
+            if (err) {
+                console.error(err);
+                callback(err, null); // Pass error to the callback
+                return;
+            }
+            callback(null, rows); // Pass rows to the callback
+        });
+    
+        con.close();
+    }   
 }
+
+
