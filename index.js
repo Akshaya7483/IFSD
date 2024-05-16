@@ -31,9 +31,7 @@ app.get('/dashboard',storageController.dashboard)
 app.get('/dashboard/:userId',storageController.sess)
 app.post('/chatroom/create/:userI/:username',storageController.create)
 app.get('/chatroom',storageController.chatroom)
-// app.get('/chatroom/join/:user02',storageController.join)
-
-
+app.post('/submitDiary/:userId/:date/:title/:data',diaryController.diary_entry)
 
 // Start server
 const port = process.env.PORT || 5555;
