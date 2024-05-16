@@ -8,11 +8,6 @@ module.exports = {
         db.createdatabase(Id)
         res.redirect('/login')
     },
-    create_tb: (req, res) => {
-        const appname = req.params.appname;
-        const userId = req.session.userId;
-        db.create_tb(appname,userId)
-    },
     dashboard:(req,res)=> {
         userId=req.session.userId
         res.redirect(`/dashboard/${userId}`)

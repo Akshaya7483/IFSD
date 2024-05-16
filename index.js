@@ -4,6 +4,7 @@ const session = require('express-session');
 const path = require('path');
 const userController = require('./controllers/userControllers');
 const storageController = require('./controllers/storageController');
+const diaryController = require('./controllers/diaryController');
 
 
 const app = express();
@@ -22,7 +23,7 @@ app.get('/', (req, res) => {
 app.get('/register', userController.registerForm);
 app.post('/register', userController.register);
 app.get('/create/:userId',storageController.createdatabase)
-app.get('/create_tb/:appname', storageController.create_tb);
+app.get('/create_tb/:appname', diaryController.create_tb);
 app.get('/login', userController.loginForm);
 app.post('/login', userController.login);
 app.get('/logout', userController.logout);

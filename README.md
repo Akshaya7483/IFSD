@@ -2,19 +2,18 @@
 .
 │
 ├── controllers
-│       └── recipeController.js
+│       └── storageController.js
 │       └── userController.js
 ├── models
-│       └── recipeModel.js
+│       └── storageModel.js
 │       └── userModel.js
 ├── public
 │       └── styles.css
 ├── views
 │   ├── index.ejs
-│   ├── createRecipe.ejs
 │   ├── dashboard.ejs
-│   ├── editRecipe.ejs
-│   └── login.ejs
+│   ├─editRecipe.ejs
+│   ├─ login.ejs
 │   └── recipeDetails.ejs
 │   └── register.ejs
 ├── database.sqlite

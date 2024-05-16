@@ -9,12 +9,7 @@
     <form id="lf" method="post">
         <input type="text" id="create" placeholder="Create Chatroom">
         <button type="button" onclick="chatroom()">Create Chatroom</button>
-    
-        <input type="text" id="join" placeholder="Join Chatroom">
-        <button type="button" onclick="joinchat()">Join Chat</button>
-    
         <h6 id="userI" style="opacity:100"><%= userId %></h6>
-    
         <button type="button" onclick="commonFunction('diary')">Diary</button>
         <button type="button" onclick="commonFunction('music')">Music</button>
         <div id="chat"></div>
@@ -27,17 +22,11 @@
             document.getElementById("lf").action = `/chatroom/create/${userI}/${username}`;
             document.getElementById("lf").submit();
         }
-    
-        function joinchat() {
-            const join = document.getElementById("join").value;
-            document.getElementById("lf").action = `/chatroom/${join}`;
-            document.getElementById("lf").submit(); // Submit form
-        }
-    
+
         function commonFunction(type) {
             document.getElementById("lf").action = `/create_tb/${type}`;
             document.getElementById("lf").method = 'get';
-            document.getElementById("lf").submit(); // Submit form
+            document.getElementById("lf").submit();
         }
     </script>
     
