@@ -11,13 +11,15 @@
         <button type="submit" onclick="chatroom()">create chatroom</button>
         <input type="text" id="join">
         <button type="submit" onclick="joinchat()">join chat</button>
+        <h6 id="userI" style="opacity:0"><%= userId %></h6>
         <button type="submit" onclick="commonFunction('diary')">Diary</button>
         <button type="submit" onclick="commonFunction('music')">Music</button>
     </form>
     <script>
-        function chatroom() {
-            const create = document.getElementById("create").value;
-            document.getElementById("lf").action = `/chatroom/${create}`;
+        function chatroom()
+        {   user02=document.getElementById("create").value
+            userI=document.getElementById("userI").value
+            document.getElementById("lf").action=`/chatroom/create/${userI}/${user02}`;
         }
         
         function joinchat() {

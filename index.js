@@ -28,12 +28,16 @@ app.post('/login', userController.login);
 app.get('/logout', userController.logout);
 app.get('/dashboard',storageController.dashboard)
 app.get('/dashboard/:userId',storageController.sess)
-app.post('/chatroom/:code',storageController.create)
+app.post('/chatroom/create/:userI/:user02',storageController.create)
+// app.get('/chatroom/join/:user02',storageController.join)
+
 
 
 // Start server
-const port = process.env.PORT || 2417;
+const port = process.env.PORT || 8000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
     console.log(`http://localhost:${port}`)
 });
+
+
