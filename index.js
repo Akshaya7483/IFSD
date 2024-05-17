@@ -30,11 +30,13 @@ app.get('/logout', userController.logout);
 app.get('/dashboard',storageController.dashboard)
 app.get('/dashboard/:userId',storageController.sess)
 app.post('/chatroom/create/:userI/:username',storageController.create)
-app.get('/chatroom',storageController.chatroom)
+app.get('/chatroom/create/:userI/:username',storageController.create)
+app.get('/chatroom/:userI',storageController.chatroom)
 app.post('/submitDiary/:userId/:date/:title/:data',diaryController.diary_entry)
+app.post('/chatview/:userId/:username',storageController.chatview)
+app.post('/insert/:userId/:username/:content',storageController.insert)
 
-// Start server
-const port = process.env.PORT || 5555;
+const port = process.env.PORT || 5556;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
     console.log(`http://localhost:${port}`)

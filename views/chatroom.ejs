@@ -3,11 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>chatroom</title>
+    <link rel="stylesheet" href="/styles2.css">
+    <title>Document</title>
 </head>
-<body>
-   <h1>chatroom created</h1>
-   
-
+<body onload="load()">
+    <form id="view" method="post">
+    <div id="layer1">
+        <div id="container1">
+            <div id="box1">
+                <div id="chatheader">Chats</div>
+                <div id="lbreaker"></div>
+                <div id="chatcontainer">
+                </div>
+            </div>    
+        </div>
+        <div id="ldivider"></div>
+        <div id="container2">
+            <div id="box2">
+                <div id="chatheader"><b><button id="viewdetails">Peter</button></b></div> 
+                <div id="chatscreen">    
+                </div>
+                <div id="userinput">
+                    <input type="text" id="textbox">
+                    <input type="button" id="send" value="send">
+                </div> 
+            </div> 
+        </div>
+    </div>
+</form>
+    <h6 id="chatter" style="opacity:0;"><%= chatters %></h6>
+    <h6 id="userId" style="opacity:0;"><%= userId %></h6>
 </body>
+<script>
+    function load()
+    {   
+        chatter=document.getElementById("chatter").textContent
+        userId=document.getElementById("userId").textContent
+        sp=chatter.split(",")
+        let html=""
+        for(let i=0;i<sp.length;i++)
+        {
+            html+=`<div id=user${i+1}>
+                <button type="submit" value="${sp[i]}" onclick="chatview(${i},${userId})">${sp[i]}</button>
+                </div>
+                <div id="lbreaker"></div>`
+        }
+        document.getElementById("chatcontainer").innerHTML=html;
+        
+    }
+    function chatview(i,userId){
+        document.getElementById("view").action = `/chatview/${userId}/${sp[i]}`;
+        // document.getElementById("view").method = 'post';
+        // document.getElementById("view").submit();
+    }
+</script>
 </html>
