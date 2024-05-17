@@ -37,6 +37,7 @@
 <script>
     function load()
     {   
+        
         chatter=document.getElementById("chatter").textContent
         userId=document.getElementById("userId").textContent
         sp=chatter.split(",")
@@ -49,6 +50,7 @@
                 <div id="lbreaker"></div>`
         }
         document.getElementById("chatcontainer").innerHTML=html;
+
         
     }
     function chatview(i,userId){

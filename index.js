@@ -36,7 +36,7 @@ app.post('/submitDiary/:userId/:date/:title/:data',diaryController.diary_entry)
 app.post('/chatview/:userId/:username',storageController.chatview)
 app.post('/insert/:userId/:username/:content',storageController.insert)
 
-const port = process.env.PORT || 3004;
+const port = 1300;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
     console.log(`http://localhost:${port}`)
