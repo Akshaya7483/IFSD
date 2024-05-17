@@ -50,19 +50,23 @@ module.exports = {
             callback(null,rows)
         })
     },
-    insert:(userI,userID,data)=>{
+    insert:(userI,userID,data,callback)=>{
         const con = new sqlite3.Database(`./storage/${userI}.sqlite`);
         const sql=`insert into chat${userID} (SentBy,data) values(?,?)`;
         con.run(sql,[1,data],(err)=>{
             if(err){
-                console.error(err.message)
+                console.error(err.message);
+                callback(err);
+                return;
             }
         })
         const con2 = new sqlite3.Database(`./storage/${userID}.sqlite`);
         const sql2=`insert into chat${userI} (SentBy,data) values(?,?)`;
-        con.run(sql2,[0,data],(err)=>{
+        con2.run(sql2,[0,data],(err)=>{
             if(err){
                 console.error(err.message)
+                callback(err)
+                return;
             }
         })
         con.close()

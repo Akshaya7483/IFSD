@@ -12,9 +12,9 @@
     <h6 id="userId" style="display: none;"><%=userId%></h6>
     <div id="chatdata"></div>
     <input type="text" id="send" placeholder="enter the message">
-    </label>
-    <input type="button" id="send" name="send" value="send" onclick="sender()">
+    <input type="button" name="send" value="send" onclick="sender()">
 </form>
+</body>
     <script>
         function chat()
         { 
@@ -35,11 +35,11 @@
             
             if(insert.trim())
             {
-                console.log("helo")
                 document.getElementById("cf").action=`/insert/${userId}/${username}/${insert.trim()}`
+                document.getElementById("send").value="";
                 document.getElementById("cf").submit();
             }
+            
         }
     </script>
-</body>
 </html>

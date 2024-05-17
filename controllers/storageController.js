@@ -19,6 +19,7 @@ module.exports = {
     create: (req, res) => {
         let userI=req.params.userI;
         let username = req.params.username;
+        console.log(userI,username)
         user.getUserByUsername(username,(err, user) => {
             if (err) {
                 console.error("Error retrieving user by username:", err);
@@ -31,6 +32,7 @@ module.exports = {
             res.status(500).send("No such username found please check the spelling");
             return;
         }
+        console.log(user.id)
         db.create_usertable(userI,user.id);
         res.redirect(`/chatroom/${userI}`)
         });
@@ -90,22 +92,25 @@ module.exports = {
         let username = req.params.username;
         let userId=req.params.userId;
         let content=req.params.content;
+        
         user.getUserByUsername(username,(err, user) => {
             if (err) {
                 console.error("Error retrieving user by username:", err);
                 res.status(500).send("An error occurred while retrieving user information");
                 return;
             }
-            db.insert(userId,user.id,content);
-            db.getchat(userId,user.id,(err,rows)=>{
-                if(err){
-                    console.error("there is an error while getting chat data")
-                    res.status(500).send("error")
-                    return;
-                }
-                let row=JSON.stringify(rows)
-                res.render(`chatview`,{row,userId,username})
-            })
+            db.insert(userId,user.id,content,(err)=>{
+                db.getchat(userId,user.id,(err,rows)=>{
+                    if(err){
+                        console.error("there is an error while getting chat data")
+                        res.status(500).send("error")
+                        return;
+                    }
+                    let row=JSON.stringify(rows)
+                    res.render(`chatview`,{row,userId,username})
+                })
+            });
+           
         })
        
     }
