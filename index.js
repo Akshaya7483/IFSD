@@ -7,7 +7,6 @@ const storageController = require('./controllers/storageController');
 const diaryController = require('./controllers/appController');
 const appController = require('./controllers/appController');
 
-// app.use(express.urlencoded({ extended: true }));
 const app = express();
 
 // Middleware
@@ -36,6 +35,8 @@ app.get('/chatroom/:userI',storageController.chatroom)
 app.post('/submitDiary/:userId/:date/:title/:data',appController.diary_entry)
 app.post('/chatview/:userId/:username',storageController.chatview)
 app.post('/insert/:userId/:username/:content',storageController.insert)
+app.post('/reload/:userId/:username/:msg',storageController.reload)
+
 
 const port = 1300;
 app.listen(port, () => {

@@ -20,20 +20,27 @@
         <div id="ldivider"></div>
         <div id="container2">
             <div id="box2">
-                <div id="chatheader"><b><button id="viewdetails">Peter</button></b></div> 
-                <div id="chatscreen">    
-                </div>
-                <div id="userinput">
-                    <input type="text" id="textbox">
-                    <input type="button" id="send" value="send">
-                </div> 
+                <div onload="chat()" id="checkempty">
+
+                    <div id="reload"> 
+                    <h1 id="username"><%=username%></h1>
+                    <h6 id="chats" style="display: none;"><%=row%></h6>
+                    <h6 id="userId" style="display: none;"><%=userId%></h6>
+                    <div id="chatdata"></div>
+                    </div>
+                    <input type="text" id="send" placeholder="enter the message" value="" style="cursor:pointer;">
+                    <input type="button" name="send" value="send" onclick="sender()">
+                </div>            
             </div> 
         </div>
     </div>
 </form>
     <h6 id="chatter" style="opacity:0;"><%= chatters %></h6>
     <h6 id="userId" style="opacity:0;"><%= userId %></h6>
+    <h6 id="message" style="opacity:0"><%= msg %></h6>
 </body>
+
+
 <script>
     function load()
     {   
@@ -50,13 +57,69 @@
                 <div id="lbreaker"></div>`
         }
         document.getElementById("chatcontainer").innerHTML=html;
-
+        let message=document.getElementById("message").textContent;
+        document.getElementById("send").value=message;
+        let checkempty=document.getElementById("username").textContent
+        if(!checkempty)
+        {
+            document.getElementById("checkempty").style.display="none"
+        }
+        else{
+            chat();
+            document.getElementById("send").focus()
+        
+        }
+    
         
     }
     function chatview(i,userId){
         document.getElementById("view").action = `/chatview/${userId}/${sp[i]}`;
-        // document.getElementById("view").method = 'post';
-        // document.getElementById("view").submit();
     }
+    function chat()
+        {   
+            let chat=document.getElementById('chats').textContent;
+            let chats=JSON.parse(chat)
+            let html=""
+            for(let i=0;i<chats.length;i++)
+            {
+                html+=`<div id='${chats[i].SentBy}'>${chats[i].data}</div>`
+            }
+            document.getElementById("chatdata").innerHTML=html;
+        }
+    function sender()
+        {
+            let insert=document.getElementById("send").value
+            let username=document.getElementById('username').textContent;
+            let userId=document.getElementById('userId').textContent;
+            
+            if(insert.trim())
+            {
+                console.log("hello")
+                document.getElementById("view").action=`/insert/${userId}/${username}/${insert.trim()}`
+                document.getElementById("send").value="";
+                document.getElementById("view").submit();
+            }
+            
+        }
+        function reload()
+        {
+            console.log("reloaded")
+            let msg=document.getElementById("send").value
+            if(!msg)
+            {
+                msg="null"
+            }
+            let username=document.getElementById('username').textContent;
+            if(!username)
+            {
+                username="null"
+            }
+            let userId=document.getElementById('userId').textContent;
+            document.getElementById("view").action=`/reload/${userId}/${username}/${msg}`
+            document.getElementById("send").value="";
+            document.getElementById("view").submit();    
+        }
+        
+        setInterval(reload,5000);
 </script>
 </html>
