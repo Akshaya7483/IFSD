@@ -10,11 +10,11 @@ module.exports = {
     },
     dashboard:(req,res)=> {
         userId=req.session.userId
-        res.redirect(`/dashboard/${userId}`)
-    },
-    sess:(req,res)=>{
-        userId=req.params.userId
-        res.render('dashboard',{userId})
+        username=""
+        row=""
+        msg=""
+        chatters=""
+        res.render('chatroom',{userId,username,row,chatters,msg})
     },
     create: (req, res) => {
         let userI=req.params.userI;

@@ -28,7 +28,6 @@ app.get('/login', userController.loginForm);
 app.post('/login', userController.login);
 app.get('/logout', userController.logout);
 app.get('/dashboard',storageController.dashboard)
-app.get('/dashboard/:userId',storageController.sess)
 app.post('/chatroom/create/:userI/:username',storageController.create)
 app.get('/chatroom/create/:userI/:username',storageController.create)
 app.get('/chatroom/:userI',storageController.chatroom)

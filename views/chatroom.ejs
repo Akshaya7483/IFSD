@@ -34,14 +34,32 @@
             </div> 
         </div>
     </div>
+    <input type="text" id="create" placeholder="Create Chatroom">
+        <button type="button" onclick="chatroom()">Create Chatroom</button>
+        <h6 id="userI" style="display: none;"><%= userId %></h6>
+        <button type="button" onclick="commonFunction('diary')">Diary</button>
+        <button type="button" onclick="commonFunction('todo')">To Do</button>
+        <div id="chat"></div>
 </form>
-    <h6 id="chatter" style="opacity:0;"><%= chatters %></h6>
-    <h6 id="userId" style="opacity:0;"><%= userId %></h6>
-    <h6 id="message" style="opacity:0"><%= msg %></h6>
+    <h6 id="chatter" style="display: none;"><%= chatters %></h6>
+    <h6 id="userId" style="display: none;"><%= userId %></h6>
+    <h6 id="message" style="display: none;"><%= msg %></h6>
 </body>
 
 
 <script>
+    function chatroom() {
+            let username = document.getElementById("create").value;
+            let userI = document.getElementById("userI").textContent; 
+            document.getElementById("view").action = `/chatroom/create/${userI}/${username}`;
+            document.getElementById("view").submit();
+        }
+
+        function commonFunction(type) {
+            document.getElementById("view").action = `/create_tb/${type}`;
+            document.getElementById("view").method = 'get';
+            document.getElementById("view").submit();
+        }
     function load()
     {   
         
