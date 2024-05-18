@@ -19,7 +19,6 @@ module.exports = {
     create: (req, res) => {
         let userI=req.params.userI;
         let username = req.params.username;
-        console.log(userI,username)
         user.getUserByUsername(username,(err, user) => {
             if (err) {
                 console.error("Error retrieving user by username:", err);
@@ -32,7 +31,6 @@ module.exports = {
             res.status(500).send("No such username found please check the spelling");
             return;
         }
-        console.log(user.id)
         db.create_usertable(userI,user.id);
         res.redirect(`/chatroom/${userI}`)
         });
@@ -61,7 +59,6 @@ module.exports = {
                     chatters[i] = row.username;
                     completedRequests++;
                     if (completedRequests === chatroomIds.length) {
-                        console.log(chatters);
                         res.render(`chatroom`,{chatters,userId})
                     }
                 });
