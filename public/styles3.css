@@ -1,0 +1,130 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+/* Container styles */
+#layer1 {
+    height: 80%;
+    width:60%;
+    display: flex;
+    /* justify-content: space-between; */
+    /* align-items: flex-start; */
+    padding: 20px;
+    
+}
+
+#container1,
+#container2 {
+    flex: 1;
+}
+
+#ldivider {
+    width: 20px;
+}
+
+#box1,
+#box2 {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    padding: 15px;
+}
+
+
+#chatheader {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    padding:7px;
+    background-color:burlywood;
+    border-radius: 10px 10px 0 0px;
+}
+ 
+#chatcontainer {
+    max-height: 800px;
+    overflow-y: auto;
+} 
+
+/* Chat message styles */
+#chatdata div {
+    padding:10px 10px 10px 10px;
+    margin-bottom: 8px;
+    background-color: #e9e9e9;
+    border-radius: 5px;
+    display:block;
+    max-width:min-content;
+    word-wrap: break-word;    
+}
+
+#u1{
+    margin-left:20%;
+}
+#u0{
+    margin-right: 20%;
+}
+/* Input styles */
+input[type="text"],
+input[type="button"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="button"] {
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Button styles */
+button[type="button"] {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+}
+
+button[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+/* Miscellaneous styles */
+#lbreaker {
+    margin-top: 10px;
+}
+
+#checkempty {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hide scrollbar for chatcontainer */
+#chatcontainer::-webkit-scrollbar {
+    width: 0;
+    display: none;
+}
+
+#userbtn{
+    background-color: #0056b3;
+    width: 20%;
+    height: 10%;
+}

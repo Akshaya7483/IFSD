@@ -5,19 +5,22 @@ module.exports = {
     create_tb: (req, res) => {
         let appname = req.params.appname;
         let userId = req.session.userId;
-        db.create_tb(appname,userId),(err)=>{0
-            if(err){
-                    console.error(err) ;
-            }
             if(appname=="diary"){
+                db.create_tb(appname,userId),(err)=>{
+                    if(err){
+                            console.error(err) ;
+                    }
                 res.render('diary',{userId})
-            }
+            }}
             else if(appname="todo")
             {
+                db.create_tb(appname,userId),(err)=>{
+                    if(err){
+                            console.error(err) ;
+                    }
                 res.render('todo',{userId})
             }
-        }
-    },
+        }},
     diary_entry:(req,res)=>{
         let userId = req.params.userId;
         let date_diary=req.params.date;

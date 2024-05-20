@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles2.css">
+    <link rel="stylesheet" href="/styles3.css">
     <title>Document</title>
 </head>
 <body onload="load()">
-    <form id="view" method="post">
+    <form id="view" action="/" method="post">
     <div id="layer1">
         <div id="container1">
             <div id="box1">
@@ -20,12 +20,9 @@
         <div id="ldivider"></div>
         <div id="container2">
             <div id="box2">
-                <div onload="chat()" id="checkempty">
-
+                <div id="checkempty">
                     <div id="reload"> 
-                    <h1 id="username"><%=username%></h1>
-                    <h6 id="chats" style="display: none;"><%=row%></h6>
-                    <h6 id="userId" style="display: none;"><%=userId%></h6>
+                    <div id="username"></div>
                     <div id="chatdata"></div>
                     </div>
                     <input type="text" id="send" placeholder="enter the message" value="" style="cursor:pointer;">
@@ -36,45 +33,99 @@
     </div>
     <input type="text" id="create" placeholder="Create Chatroom">
         <button type="button" onclick="chatroom()">Create Chatroom</button>
-        <h6 id="userI" style="display: none;"><%= userId %></h6>
-        <button type="button" onclick="commonFunction('diary')">Diary</button>
-        <button type="button" onclick="commonFunction('todo')">To Do</button>
+   
+        <button type="button" onclick="('diary')">Diary</button>
+        <button type="button" onclick="('todo')">To Do</button>
         <div id="chat"></div>
 </form>
-    <h6 id="chatter" style="display: none;"><%= chatters %></h6>
-    <h6 id="userId" style="display: none;"><%= userId %></h6>
-    <h6 id="message" style="display: none;"><%= msg %></h6>
 </body>
+
+<h6 id="userId" style="display:none"><%=userId %></h6>
+<h6 id="giver" style="display:none"><%=giver%></h6>
+<h6 id="identifier" style="display:none"><%= identifier %></h6>
 
 
 <script>
-    function chatroom() {
-            let username = document.getElementById("create").value;
-            let userI = document.getElementById("userI").textContent; 
-            document.getElementById("view").action = `/chatroom/create/${userI}/${username}`;
-            document.getElementById("view").submit();
+ function load() {
+    // manage session storage chatters
+    let userId=document.getElementById("userId").textContent;
+    let iden=document.getElementById("identifier").textContent;
+    if(iden=="chatters")
+    {
+        let chatter=document.getElementById("giver").textContent;
+        if(chatter)
+        {
+            sessionStorage.setItem(`user${userId}chatter`,`${chatter}`)
+            chatter=document.getElementById("giver").textContent="";
+         }
+    }
+    if(iden=="chatview")
+    {   
+        chat()
+    }
+
+    let msg=sessionStorage.getItem(`user${userId}msg`);
+    document.getElementById("send").value=msg;
+
+    loadchatter();
+}
+function chat()
+{   let userId=document.getElementById("userId").textContent;
+    let username=sessionStorage.getItem(`user${userId}username`)
+    document.getElementById("username").textContent=username;
+
+    let data=document.getElementById("giver").textContent;
+    let chats=JSON.parse(data)
+    let html=""
+    for(let i=0;i<chats.length;i++)
+    {
+        html+=`<div id='u${chats[i].SentBy}'>${chats[i].data} </div>`
+            
+    }
+    document.getElementById("chatdata").innerHTML=html;
+
         }
 
-        function commonFunction(type) {
-            document.getElementById("view").action = `/create_tb/${type}`;
-            document.getElementById("view").method = 'get';
-            document.getElementById("view").submit();
-        }
-    function load()
+function chatroom() {
+    let username = document.getElementById("create").value;
+    let userId = document.getElementById("userId").textContent; 
+ 
+    let myname=sessionStorage.getItem('myname')
+    localStorage.setItem(`reload${myname}`,'required')
+    localStorage.setItem(`reload${username}`,'required')
+
+    document.getElementById("view").action = `/chatroom/create/${userId}/${username}`;
+    document.getElementById("view").submit();
+        }   
+
+function loadchatter()
     {   
-        
-        chatter=document.getElementById("chatter").textContent
-        userId=document.getElementById("userId").textContent
+        userId=document.getElementById("userId").textContent;
+        chatter=sessionStorage.getItem(`user${userId}chatter`)
         sp=chatter.split(",")
         let html=""
         for(let i=0;i<sp.length;i++)
         {
             html+=`<div id=user${i+1}>
-                <button type="submit" value="${sp[i]}" onclick="chatview(${i},${userId})">${sp[i]}</button>
+                <button type="submit" id="userbtn" value="${sp[i]}" onclick="chatview(${i},${userId})">${sp[i]}</button>
                 </div>
                 <div id="lbreaker"></div>`
         }
+        
         document.getElementById("chatcontainer").innerHTML=html;
+        
+        
+    }
+
+function chatview(i,userId){
+        sessionStorage.setItem(`user${userId}username`,`${sp[i]}`)
+        document.getElementById("view").action = `/chatview/${userId}/${sp[i]}`;
+        document.getElementById("view").submit()
+    }
+
+
+function checkmsg()
+    {
         let message=document.getElementById("message").textContent;
         document.getElementById("send").value=message;
         let checkempty=document.getElementById("username").textContent
@@ -87,57 +138,54 @@
             document.getElementById("send").focus()
         
         }
+    }
+  
     
-        
-    }
-    function chatview(i,userId){
-        document.getElementById("view").action = `/chatview/${userId}/${sp[i]}`;
-    }
-    function chat()
-        {   
-            let chat=document.getElementById('chats').textContent;
-            let chats=JSON.parse(chat)
-            let html=""
-            for(let i=0;i<chats.length;i++)
-            {
-                html+=`<div id='${chats[i].SentBy}'>${chats[i].data}</div>`
-            }
-            document.getElementById("chatdata").innerHTML=html;
-        }
-    function sender()
-        {
-            let insert=document.getElementById("send").value
-            let username=document.getElementById('username').textContent;
-            let userId=document.getElementById('userId').textContent;
-            
-            if(insert.trim())
-            {
-                console.log("hello")
-                document.getElementById("view").action=`/insert/${userId}/${username}/${insert.trim()}`
-                document.getElementById("send").value="";
-                document.getElementById("view").submit();
+function sender()
+{
+    let insert=document.getElementById("send").value
+    let userId=document.getElementById('userId').textContent;
+    let username=sessionStorage.getItem(`user${userId}username`)
+    if(insert.trim())
+    {
+        let myname=sessionStorage.getItem('myname')
+        localStorage.setItem(`reload${myname}`,'required')
+        localStorage.setItem(`reload${username}`,'required')
+        document.getElementById("view").action=`/insert/${userId}/${username}/${insert.trim()}`
+        document.getElementById("send").value="";
+        document.getElementById("view").submit();
             }
             
         }
-        function reload()
-        {
-            console.log("reloaded")
-            let msg=document.getElementById("send").value
-            if(!msg)
-            {
-                msg="null"
-            }
-            let username=document.getElementById('username').textContent;
-            if(!username)
-            {
-                username="null"
-            }
-            let userId=document.getElementById('userId').textContent;
-            document.getElementById("view").action=`/reload/${userId}/${username}/${msg}`
-            document.getElementById("send").value="";
-            document.getElementById("view").submit();    
+function reload()
+{
+    
+    let myname=sessionStorage.getItem('myname')
+    let reload=localStorage.getItem(`reload${myname}`)
+    let username=document.getElementById('username').textContent;
+    let userId=document.getElementById('userId').textContent;
+    let msg=document.getElementById("send").value
+    if(msg)
+   {
+        sessionStorage.setItem(`user${userId}msg`,`${msg}`)
+    }
+    else{
+        sessionStorage.setItem(`user${userId}msg`,``);
         }
+    if(!username) 
+    {
+        username="null"
+    }    
+    if(reload=="required")
+    {   let currentUrl = window.location.href;
+        localStorage.removeItem(`reload${myname}`)
+        document.getElementById("view").action=`${currentUrl}`;
+        document.getElementById("view").submit()
         
-        setInterval(reload,5000);
+    }
+    load()
+
+        }        
+setInterval(reload,2000);
 </script>
 </html>

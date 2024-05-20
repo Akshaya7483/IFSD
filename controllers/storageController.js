@@ -8,17 +8,12 @@ module.exports = {
         db.createdatabase(Id)
         res.redirect('/login')
     },
-    dashboard:(req,res)=> {
-        userId=req.session.userId
-        username=""
-        row=""
-        msg=""
-        chatters=""
-        res.render('chatroom',{userId,username,row,chatters,msg})
-    },
+ 
     create: (req, res) => {
         let userI=req.params.userI;
         let username = req.params.username;
+        console.log(userI,username)
+        
         user.getUserByUsername(username,(err, user) => {
             if (err) {
                 console.error("Error retrieving user by username:", err);
@@ -31,21 +26,30 @@ module.exports = {
             res.status(500).send("No such username found please check the spelling");
             return;
         }
+        console.log(user.id)
         db.create_usertable(userI,user.id);
         res.redirect(`/chatroom/${userI}`)
         });
     },
     chatroom: (req, res) => {
+      
         const chatters = [];
-        let completedRequests = 0;
+
         const userId = req.params.userI;
         db.chat(userId, (err, rows) => {
             if (err) {
                 return res.status(500).send('Error fetching chatrooms');
             }
+        
             const chatroomIds = rows.map(row => parseInt(row.name.replace('chat', '')));
-      
-    
+            if(!chatroomIds.length)
+            {   
+                let giver="";
+                let identifier="empty";
+                res.render(`chatroom`,{userId,giver,identifier})
+                return;
+            }
+            let completedRequests = 0;
             for (let i = 0; i < chatroomIds.length; i++) {
                 user.getUserById(chatroomIds[i], (err, row) => {
                     if (err) {
@@ -60,176 +64,92 @@ module.exports = {
                     completedRequests++;
                     if (completedRequests === chatroomIds.length) {
                         console.log(chatters);
-                        let row="";
-                        let username="";
-                        let msg="";
-                        res.render(`chatroom`,{chatters,userId,row,username,msg})
+                        let giver=chatters;
+                        let identifier="chatters";
+                        res.render(`chatroom`,{userId,giver,identifier})
+                        return;
                     }
                 });
             }
         });
     },
     chatview:(req,res)=>{
-        const chatters = [];
-        let completedRequests = 0;
         let username = req.params.username;
         let userId=req.params.userId;
-        
-        db.chat(userId, (err, rows) => {
+        user.getUserByUsername(username,(err, user) => {
             if (err) {
-                return res.status(500).send('Error fetching chatrooms');
-            }
-            const chatroomIds = rows.map(row => parseInt(row.name.replace('chat', '')));
-      
-    
-            for (let i = 0; i < chatroomIds.length; i++) {
-                user.getUserById(chatroomIds[i], (err, row) => {
-                    if (err) {
-                        console.error("Error while fetching usernames of userid:", err);
-                        return res.status(500).send('Error fetching chatroomId');
-                    }
-                    if (!row) {
-                        console.error("No users connected");
-                        return res.status(500).send('Error fetching username');
-                    }
-                    chatters[i] = row.username;
-                    completedRequests++;
-                    if (completedRequests === chatroomIds.length) {
-                        console.log(chatters);
-                        user.getUserByUsername(username,(err, user) => {
-                            if (err) {
-                                console.error("Error retrieving user by username:", err);
-                                res.status(500).send("An error occurred while retrieving user information");
-                                return;
-                            }
-                            db.getchat(userId,user.id,(err,rows)=>{
-                                if(err){
-                                    console.error("there is an error while getting chat data")
-                                    res.status(500).send("error")
-                                    return;
-                                }
-                                let row=JSON.stringify(rows)
-                                let msg=""
-                                res.render(`chatroom`,{chatters,userId,row,username,msg})
+                console.error("Error retrieving user by username:", err);
+                res.status(500).send("An error occurred while retrieving user information");
+                return;
+                }
+            db.getchat(userId,user.id,(err,rows)=>{
+                if(err){
+                    console.error("there is an error while getting chat data")
+                    res.status(500).send("error")
+                    return;
+                        }
+                let row=JSON.stringify(rows)
+                let giver=row;
+                let identifier="chatview"
+                res.render(`chatroom`,{userId,giver,identifier})
                             })
                         })
 
-                    }
-                });
-            }
-        });    
-    },
+        },
     insert:(req,res)=>{
-        const chatters = [];
-        let completedRequests = 0;
-        const userId = req.params.userId;
+        
         let username = req.params.username;
+        let userId=req.params.userId;
         let content=req.params.content;
-        db.chat(userId, (err, rows) => {
+        
+        user.getUserByUsername(username,(err, user) => {
             if (err) {
-                return res.status(500).send('Error fetching chatrooms');
+                console.error("Error retrieving user by username:", err);
+                res.status(500).send("An error occurred while retrieving user information");
+                return;
             }
-            const chatroomIds = rows.map(row => parseInt(row.name.replace('chat', '')));
-      
-    
-            for (let i = 0; i < chatroomIds.length; i++) {
-                user.getUserById(chatroomIds[i], (err, row) => {
-                    if (err) {
-                        console.error("Error while fetching usernames of userid:", err);
-                        return res.status(500).send('Error fetching chatroomId');
-                    }
-                    if (!row) {
-                        console.error("No users connected");
-                        return res.status(500).send('Error fetching username');
-                    }
-                    chatters[i] = row.username;
-                    completedRequests++;
-                    if (completedRequests === chatroomIds.length) {
-                        user.getUserByUsername(username,(err, user) => {
-                            if (err) {
-                                console.error("Error retrieving user by username:", err);
-                                res.status(500).send("An error occurred while retrieving user information");
-                                return;
-                            }
-                            db.insert(userId,user.id,content,(err)=>{
-                                db.getchat(userId,user.id,(err,rows)=>{
-                                    if(err){
-                                        console.error("there is an error while getting chat data")
-                                        res.status(500).send("error")
-                                        return;
-                                    }
-                                    let row=JSON.stringify(rows)
-                                    let msg=""
-                                    res.render(`chatroom`,{row,userId,username,chatters,msg})
-                                })
-                            });
-                           
-                        })
-                    }
-                });
-            }
-        });
-    },
-    reload:(req,res)=>{
-        const chatters = [];
-        let completedRequests = 0;
-        let userId=req.params.userId;  
-        let username = req.params.username;
-        let msg=req.params.msg
-        if(msg=="null")
-            {
-                msg=""; 
-           }
-        if(username=="null")
-            {
-                username=""
-            }
-        db.chat(userId, (err, rows) => {
-            if (err) {
-                return res.status(500).send('Error fetching chatrooms');
-            }
-            const chatroomIds = rows.map(row => parseInt(row.name.replace('chat', '')));
-            for (let i = 0; i < chatroomIds.length; i++) {
-                user.getUserById(chatroomIds[i], (err, row) => {
-                    if (err) {
-                        console.error("Error while fetching usernames of userid:", err);
-                        return res.status(500).send('Error fetching chatroomId');
-                    }
-                    if (!row) {
-                        console.error("No users connected");
-                        return res.status(500).send('Error fetching username');
-                    }
-                    chatters[i] = row.username;
-                    completedRequests++;
-                    if (completedRequests === chatroomIds.length) {
-                        user.getUserByUsername(username,(err, user) => {
-                        if (err) {
-                            console.error("Error retrieving user by username:", err);
-                            res.status(500).send("An error occurred while retrieving user information");
-                            return;
-                        }
-                    if(!user)
-                    {
-                        let row=""
-                        res.render(`chatroom`,{chatters,row,userId,username,msg})
-                        return;
-                        }
-                       db.getchat(userId,user.id,(err,rows)=>{
-                        if(err){
+            db.insert(userId,user.id,content,(err)=>{
+                db.getchat(userId,user.id,(err,rows)=>{
+                    if(err){
                         console.error("there is an error while getting chat data")
                         res.status(500).send("error")
                         return;
-                        }
-                        let row=JSON.stringify(rows)
-                        
-                    res.render(`chatroom`,{chatters,row,userId,username,msg})
+                    }
+                    let row=JSON.stringify(rows)
+                    let giver=row;
+                    let identifier="chatview"
+                    res.render(`chatroom`,{userId,giver,identifier})
                 })
+            });
            
         })
-                    }
-                });
+       
+    },
+    reload:(req,res)=>{
+        let username = req.params.username;
+        let userId=req.params.userId;  
+        if(username=="null") 
+        {
+            res.redirect(`/chatroom/${userId}`)
+            return;
+        }
+          
+        user.getUserByUsername(username,(err, user) => {
+            if (err) {
+                console.error("Error retrieving user by username:", err);
+                res.status(500).send("An error occurred while retrieving user information");
+                return;
             }
-        });
- 
+            db.getchat(userId,user.id,(err,rows)=>{
+                if(err){
+                    console.error("there is an error while getting chat data")
+                    res.status(500).send("error")
+                    return;
+                    }
+                    let row=JSON.stringify(rows)
+                    res.render(`chatview`,{row,userId,username})
+                });
+           
+        })
     }
 };

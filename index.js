@@ -4,8 +4,7 @@ const session = require('express-session');
 const path = require('path');
 const userController = require('./controllers/userControllers');
 const storageController = require('./controllers/storageController');
-const diaryController = require('./controllers/appController');
-const appController = require('./controllers/appController');
+
 
 const app = express();
 
@@ -23,21 +22,18 @@ app.get('/', (req, res) => {
 app.get('/register', userController.registerForm);
 app.post('/register', userController.register);
 app.get('/create/:userId',storageController.createdatabase)
-app.get('/create_tb/:appname',appController.create_tb);
 app.get('/login', userController.loginForm);
 app.post('/login', userController.login);
-app.get('/logout', userController.logout);
-app.get('/dashboard',storageController.dashboard)
-app.post('/chatroom/create/:userI/:username',storageController.create)
-app.get('/chatroom/create/:userI/:username',storageController.create)
 app.get('/chatroom/:userI',storageController.chatroom)
-app.post('/submitDiary/:userId/:date/:title/:data',appController.diary_entry)
+app.post('/chatroom/:userI',storageController.chatroom)
+app.get('/logout', userController.logout);
+app.post('/chatroom/create/:userI/:username',storageController.create)
 app.post('/chatview/:userId/:username',storageController.chatview)
 app.post('/insert/:userId/:username/:content',storageController.insert)
-app.post('/reload/:userId/:username/:msg',storageController.reload)
+app.post('/reload/:userId/:username',storageController.reload)
 
 
-const port = 1300;
+const port = 7000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
     console.log(`http://localhost:${port}`)

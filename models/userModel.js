@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database('./database.sqlite');
-// db.run("create table users(id integer primary key autoincrement,username text unique not null,email text unique not null,password text not null)")
+// db.run("create table users(id integer primary key autoincrement,username text unique not null ,email text unique not null,password text not null)")
 module.exports = {
     createUser: (username, email, password, callback) => {
         db.run('INSERT INTO users (username, email, password) VALUES (?, ?, ?)',

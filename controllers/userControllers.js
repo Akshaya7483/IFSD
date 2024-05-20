@@ -1,3 +1,4 @@
+const session = require('express-session');
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
 
@@ -42,15 +43,18 @@ module.exports = {
                 return;
             }
             // Check if passwords match
+          
             bcrypt.compare(password, user.password, (err, result) => {
+                
                 if (err) {
                     console.error("Error comparing passwords:", err.message);
                     res.status(500).send("An error occurred while comparing passwords");
                     return;
                 }
                 if (result) {
-                    req.session.userId = user.id; // Store user ID in session
-                    res.redirect(`/dashboard`); // Redirect to dashboard or any other route
+                    req.session.userId = user.id;
+                    userId=user.id
+                    res.redirect(`/chatroom/${userId}`); // Redirect to dashboard or any other route
                 } else {
                     console.error("Incorrect password for username:", username);
                     res.status(401).send('Incorrect password');
