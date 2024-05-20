@@ -31,7 +31,9 @@ app.post('/chatroom/create/:userI/:username',storageController.create)
 app.post('/chatview/:userId/:username',storageController.chatview)
 app.post('/insert/:userId/:username/:content',storageController.insert)
 app.post('/reload/:userId/:username',storageController.reload)
-
+app.post('/diary/:userId',storageController.diary)
+app.post('/todo',storageController.todo)
+app.post('/addDiary/:userId/:date/:title/:entry',storageController.adddiary)
 
 const port = 7000;
 app.listen(port, () => {

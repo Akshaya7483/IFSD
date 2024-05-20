@@ -1,11 +1,16 @@
 const db = require('../models/storageModel');
+const db2=require('../models/appModel')
 const user=require('../models/userModel')
+const AM=require('../models/appModel')
+
 // const bcrypt = require('bcryptjs');
 
 module.exports = {
     createdatabase:(req,res)=>{
         Id=req.params.userId
         db.createdatabase(Id)
+        AM.create_diary(Id);
+        AM.create_todo(Id)
         res.redirect('/login')
     },
  
@@ -151,5 +156,23 @@ module.exports = {
                 });
            
         })
+    },
+    todo:(req,res)=>
+    {
+        userId=req.params.userId;
+        res.render(`todo`)
+    },
+    diary:(req,res)=>{
+        userId=req.params.userId;
+        let giver=""
+        let identifier="diary"
+        res.render(`chatroom`,{userId,giver,identifier})
+    },
+    adddiary:(req,res)=>{
+        userId=req.params.userId;
+        date=req.params.date;
+        title=req.params.title;
+        entry=req.params.entry;
+        db2.diary_data(userId,date,title,entry)
     }
 };

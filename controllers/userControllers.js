@@ -20,9 +20,9 @@ module.exports = {
                     res.status(500).send(err.message);
                     console.log("error there")
                     return;
-                }
-
+                }  
                 res.redirect(`/create/${userId}`);
+             
             });
         });
     },

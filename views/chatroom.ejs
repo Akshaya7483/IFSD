@@ -34,8 +34,8 @@
     <input type="text" id="create" placeholder="Create Chatroom">
         <button type="button" onclick="chatroom()">Create Chatroom</button>
    
-        <button type="button" onclick="('diary')">Diary</button>
-        <button type="button" onclick="('todo')">To Do</button>
+        <button type="button" onclick="diary()">Diary</button>
+        <button type="button" onclick="todo()">To Do</button>
         <div id="chat"></div>
 </form>
 </body>
@@ -43,6 +43,51 @@
 <h6 id="userId" style="display:none"><%=userId %></h6>
 <h6 id="giver" style="display:none"><%=giver%></h6>
 <h6 id="identifier" style="display:none"><%= identifier %></h6>
+
+
+<script>
+    function todo()
+    {
+        document.getElementById("view").action = `/todo`;
+        document.getElementById("view").submit();
+    }
+        function diary()
+        {
+            userId=document.getElementById("userId").textContent
+             // sessionStorage.setItem('create','yes')
+            document.getElementById("view").action = `/diary/${userId}`;
+            document.getElementById("view").submit();
+        }
+       
+    function popdiary(){
+        let chatdetails=document.getElementById('box2').innerHTML
+        let html=`<label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="Entry">Entry:</label>
+            <textarea id="Entry" name="Entry" required></textarea>
+            <button type="submit" onclick="save()">Save</button>`
+
+        document.getElementById('box2').innerHTML=html
+    }
+    function save()
+        {
+            let userId=document.getElementById("userId").textContent;
+            let date = document.getElementById("date").value;
+            let title = document.getElementById("title").value; 
+            let entry = document.getElementById("Entry").value; 
+            document.getElementById("view").method="post";
+            document.getElementById("view").action = `/addDiary/${userId}/${date}/${title}/${entry}`;
+            document.getElementById("view").submit();
+        }
+</script>
+
+
+
+
 
 
 <script>
@@ -63,7 +108,10 @@
     {   
         chat()
     }
-
+    if(iden=="diary")
+    {
+        popdiary()
+    }
     let msg=sessionStorage.getItem(`user${userId}msg`);
     document.getElementById("send").value=msg;
 
@@ -186,6 +234,6 @@ function reload()
     load()
 
         }        
-setInterval(reload,2000);
+// setInterval(reload,2000);
 </script>
 </html>
